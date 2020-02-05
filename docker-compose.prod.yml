@@ -1,0 +1,11 @@
+version: '3.6'
+services: 
+  vault:
+    container_name: vault
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+    volumes:
+      - ./vault/logs:/vault/logs
+      - ./vault/file:/vault/file
+      - ./vault/config:/vault/config
+    entrypoint: vault server -config=/vault/config/config.hcl
