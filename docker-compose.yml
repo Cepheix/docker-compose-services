@@ -1,20 +1,33 @@
 version: '3.6'
 services: 
-  # vault:
-  #   image: vault:latest
-  #   container_name: vault-dev
-  #   ports: 
-  #     - "8200:8200"
-  #   cap_add:
-  #     - IPC_LOCK
-  #   environment:
-  #     - VAULT_ADDR=http://127.0.0.1:8200
-  #     - VAULT_DEV_ROOT_TOKEN_ID=00000000-0000-0000-0000-000000000000
+
+  vault:
+    image: vault:latest
+    container_name: vault-dev
+    ports: 
+      - "8200:8200"
+    cap_add:
+      - IPC_LOCK
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_DEV_ROOT_TOKEN_ID=00000000-0000-0000-0000-000000000000
+      
   elasticsearch:
     image: elastic/elasticsearch:7.5.2
     container_name: elasticsearch-dev
     environment:
       - discovery.type=single-node
+      - http.port=9200
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://localhost:1358,http://127.0.0.1:1358
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
     ports: 
       - "9200:9200"
       - "9300:9300"
+  
+  dejavu:
+    image: appbaseio/dejavu:3.3.0
+    container_name: dejavu
+    ports:
+      - '1358:1358'
