@@ -1,4 +1,7 @@
 using System;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
@@ -9,12 +12,8 @@ namespace FakeWebApi.Configuration
     {
         public static void CreateSerilogLogger(IServiceProvider serviceProvider)
         {
-            var config = new ElasticsearchConfiguration()
-            {
-                Url = "http://localhost:9200/"
-            };
-
-            AssignLogger(config);
+            var loggingConfiguration = serviceProvider.GetRequiredService<IOptionsMonitor<ElasticsearchConfiguration>>();
+            AssignLogger(loggingConfiguration.CurrentValue);
         }
 
         public static void AssignLogger(ElasticsearchConfiguration configuration)
@@ -30,6 +29,12 @@ namespace FakeWebApi.Configuration
             var logger = loggerConfiguration.CreateLogger();
 
             Log.Logger = logger;
+        }
+
+        public static void AddLoggerConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            var loggingConfiguration = configuration.GetSection("ElasticSearchLogging");
+            services.Configure<ElasticsearchConfiguration>(loggingConfiguration);
         }
     }
 }
