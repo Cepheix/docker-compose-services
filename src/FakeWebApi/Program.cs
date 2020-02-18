@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using FakeWebApi.Configuration;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace FakeWebApi
 {
@@ -13,7 +11,30 @@ namespace FakeWebApi
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            IHost host = CreateHostBuilder(args).Build();
+            InitializeServices(host);
+            RunHost(host);
+        }
+
+        public static void InitializeServices(IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            IServiceProvider services = scope.ServiceProvider;
+            LoggingExtension.CreateSerilogLogger(services);
+        }
+
+        public static void RunHost(IHost host)
+        {
+            try {
+                Log.Information("Starting web host");
+                host.Run();
+            }
+            catch (Exception ex) {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -21,6 +42,7 @@ namespace FakeWebApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .UseSerilog();
     }
 }
