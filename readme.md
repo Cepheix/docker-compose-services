@@ -1,5 +1,8 @@
 # Generic services for microservices development as cluster
 
+According to the article: [Logging with ElasticSearch, Kibana, ASP.NET Core and Docker](https://www.humankode.com/asp-net-core/logging-with-elasticsearch-kibana-asp-net-core-and-docker)
+
+
 ## Development
 
 ```sh
