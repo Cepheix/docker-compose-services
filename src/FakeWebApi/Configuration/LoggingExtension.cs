@@ -33,7 +33,7 @@ namespace FakeWebApi.Configuration
 
         public static void AddLoggerConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            var loggingConfiguration = configuration.GetSection("ElasticSearchLogging");
+            var loggingConfiguration = configuration.GetSection("Elasticsearch");
             services.Configure<ElasticsearchConfiguration>(loggingConfiguration);
         }
     }
