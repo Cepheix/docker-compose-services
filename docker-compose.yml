@@ -63,6 +63,17 @@ services:
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
 
+  alertmanager:
+    image: prom/alertmanager:v0.20.0
+    container_name: alertmanager-dev
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
   cadvisor:
     image: google/cadvisor:v0.33.0
     container_name: cadvisor-dev

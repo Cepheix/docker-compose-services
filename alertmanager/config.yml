@@ -1,0 +1,8 @@
+# # The root route on which each incoming alert enters.
+# route:
+#   receiver: 'team-mails'
+
+# receivers:
+# - name: 'team-mails'
+#   email_configs:
+#   - to: 'nasla-connectors@capgemini.com'
