@@ -11,5 +11,6 @@ namespace FakeWebApi.Configuration.Vault
     {
         public string EnginePath { get; set; }
         public string ElasticSearchPath { get; set; }
+        public string MonitoringPath { get; set; }
     }
 }

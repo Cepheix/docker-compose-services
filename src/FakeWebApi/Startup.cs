@@ -1,4 +1,5 @@
 using FakeWebApi.Configuration;
+using FakeWebApi.Configuration.Metrics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,12 +21,13 @@ namespace FakeWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLoggerConfiguration(Configuration);
+            services.AddMetricsConfiguration(Configuration);
 
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MetricsConfiguration metricsConfiguration)
         {
             if (env.IsDevelopment())
             {
@@ -35,6 +37,8 @@ namespace FakeWebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.AddMetricsCapturing(metricsConfiguration);
 
             app.UseAuthorization();
 

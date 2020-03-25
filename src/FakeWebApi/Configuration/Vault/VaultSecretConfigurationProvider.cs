@@ -27,6 +27,7 @@ namespace FakeWebApi.Configuration.Vault
         {
             var common = _connectionConfiguration.Common;
             await AddSecretToConfiguration(common.ElasticSearchPath, common.EnginePath);
+            await AddSecretToConfiguration(common.MonitoringPath, common.EnginePath);
         }
 
         private async Task AddSecretToConfiguration(string secretPath, string enginePath)
