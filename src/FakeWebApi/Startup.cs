@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace FakeWebApi
 {
@@ -27,7 +28,7 @@ namespace FakeWebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MetricsConfiguration metricsConfiguration)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptionsMonitor<MetricsConfiguration> metricsConfiguration)
         {
             if (env.IsDevelopment())
             {
@@ -38,7 +39,7 @@ namespace FakeWebApi
 
             app.UseRouting();
 
-            app.AddMetricsCapturing(metricsConfiguration);
+            app.AddMetricsCapturing(metricsConfiguration.CurrentValue);
 
             app.UseAuthorization();
 
