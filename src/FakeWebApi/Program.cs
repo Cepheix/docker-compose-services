@@ -41,7 +41,7 @@ namespace FakeWebApi
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) => {
-                    config.AddVaultSecrets();
+                    config.AddVaultSecrets(true, 90000);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
